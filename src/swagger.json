@@ -1,0 +1,153 @@
+{
+    "openapi":"3.0.0",
+    "info":{
+        "title":"Sistemas distribuitdo - Gateway",
+        "description":"Esta constitui a segunda avaliação da disciplina de Sistemas Distribuídos no Instituto Federal da Paraíba, campus Cajazeiras, sob a orientação do professor Antonio Ricart Jacinto de Oliveira Medeiros.",
+        "contact":{
+            "email":"jose.farley@academico.ifpb.edu.br"
+        },
+        "version":"1.0.0"
+    },
+    "servers":[
+        {
+            "url":"http://localhost:3000/",
+            "description":"Rota principal do gateway"
+
+        }
+    ],
+    "paths":{
+        "/comment": {
+            "post":{
+                "summary":"Rota de cadastro de comentários.",
+                "description":"Essa é a rota que o front-end deve requisitar para persistir comentários.",
+                "tags":["Comments"],
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "$ref":"#/components/schemas/Comment"
+                            }
+                        },
+                        "examples":{
+                            "comment":{
+                                "value":{
+                                    "name":"Jhon Doe",
+                                    "email":"jhonDoe253@gmail.com",
+                                    "bookId":"YuVGMzsdyA",
+                                    "content":"Gostei muito do livro."
+                                }
+                            }
+                        }
+                    }
+                },
+                "response":{
+                    "200":{
+                        "description":"OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "items":{
+                                        "$ref":"#/components/schemas/Response"
+                                    }
+                                }
+                            }
+                        }
+                       
+                    }
+                }
+            }
+        },
+        "/livros":{
+            "get":{
+                "description":"Essa é a rota que o front-end deve requisitar para buscar um livro por nome.",
+                "summary":"Busca de um produto por nome",
+                "tags":["Livros"],
+                "parameters":[{
+                    "name":"q",
+                    "in":"query",
+                    "description":"Nome do livro para busca",
+                    "required":true
+                }]   
+            },
+            "response":{
+                "200":{
+                    "description":"OK",
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type":"object",
+                                "items":{
+                                    "$ref":"#/components/schemas/Response"
+                                }
+                            }
+                        }
+                    }
+                   
+                }
+            }
+        },
+        "/detalhes/{id}":{
+            "get":{
+                "description":"Essa é a rota que o front-end deve requisitar para obter os detalhes de um livro, bem como os comentários de usuários da plataforma",
+                "summary":"Busca dados e comentários de uma livro",
+                "tags":["Livros"],
+                "parameters":[{
+                    "name":"id",
+                    "in":"path",
+                    "description":"Nome do livro para busca",
+                    "required":true
+                }]   
+            },
+            "response":{
+                "200":{
+                    "description":"OK",
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type":"object",
+                                "items":{
+                                    "$ref":"#/components/schemas/Response"
+                                }
+                            }
+                        }
+                    }
+                   
+                }
+            }
+        }
+        
+    },
+    "components":{
+        "schemas": {
+            "Response":{
+                "type":"object",
+                "properties":{
+                    "data":{
+                        "type":"object"
+                    },
+                    "has_error":{
+                        "type":"boolean"
+                    }
+                }
+            },
+            "Comment":{
+                "type":"object",
+                "properties":{
+                    "name": {
+                        "type":"string"
+                    },
+                    "email": {
+                        "type":"string"
+                    },
+                     "bookId": {
+                        "type":"string"
+                    },
+                    "content": {
+                        "type":"string"
+                    }
+                }
+            }
+        }
+    }
+}
